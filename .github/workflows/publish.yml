@@ -1,0 +1,28 @@
+name: "Publish to npm"
+
+on:
+  push:
+    branches:
+      - main 
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: install node & yarn 
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org
+      - name: install yarn 
+        run: npm install --global yarn
+      - name: install third party libs
+        run: yarn install
+      - name: build library
+        run: yarn build
+      - name: publish to npm
+        run: yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
