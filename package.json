@@ -1,6 +1,6 @@
 {
   "name": "simplify-redux-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Library for simplify redux",
   "main": "build/index.js",
   "module": "build/index.es.js",
@@ -10,7 +10,7 @@
     "coverage": "jest --coverage",
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "prettier": "prettier --trailing-comma es5 --single-quote --write ./{src,tests}/**/*.{ts,js}"
+    "prettier": "prettier --trailing-comma es5 --single-quote --write './{src,tests,example}/**/*.{ts,js,tsx}'"
   },
   "files": [
     "build"
