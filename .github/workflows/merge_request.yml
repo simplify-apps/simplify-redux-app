@@ -1,12 +1,12 @@
-name: "Publish to npm"
+name: "Checks om merge request"
 
 on:
-  push:
+  pull_request:
     branches:
       - main 
 jobs:
   release:
-    name: release
+    name: checks before merge
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,11 +20,7 @@ jobs:
         run: npm install --global yarn
       - name: install third party libs
         run: yarn install
-      - name: build library
-        run: yarn build
       - name: test library
         run: yarn test
-      - name: publish to npm
-        run: yarn publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+      - name: build library
+        run: yarn build
