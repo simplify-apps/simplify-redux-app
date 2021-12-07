@@ -78,6 +78,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
           return {
             name: data.name,
             url: data.url,
+            body: data.body,
             payload: getPayload(args),
             method: data.method,
           };
