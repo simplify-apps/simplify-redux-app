@@ -74,7 +74,7 @@ export interface ReduxServerAction<TInitialState> {
   /**
    * The body request which  will be used in the HTTP request
    */
-  payload?: any;
+  body?: any;
 
   /**
    * The method which will be used for the store updating after successful server response
