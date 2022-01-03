@@ -56,6 +56,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
 
           return {
             name: model.name,
+            type: model.name,
             updater: data.updater,
             payload: getPayload(args),
           };
