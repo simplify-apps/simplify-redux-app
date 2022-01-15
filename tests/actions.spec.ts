@@ -23,23 +23,24 @@ test('store default state', () => {
   expect(todoState.todoItems).toStrictEqual(todoInitState.todoItems);
 });
 
-test('action tests', () => {
+test('action tests', async () => {
   const { title } = mockAPIAnswers;
-  store.dispatch(addTodoItem(title));
+  const result = addTodoItem(title);
+  store.dispatch(await result);
 
   const todoState = [...todoInitState.todoItems, title];
   const currentState = store.getState();
 
   expect(todoState).toStrictEqual(currentState.todo.todoItems);
-  store.dispatch(resetState());
+  store.dispatch(await resetState());
 
   const resetTest = store.getState().todo;
   expect(resetTest.todoItems).toStrictEqual(todoInitState.todoItems);
 });
 
-test('action result', () => {
+test('action result', async () => {
   const newItem = 'test item';
-  const action = addTodoItem(newItem);
+  const action = await addTodoItem(newItem);
   const actionName = ADD_NEW_ITEM_NAME;
 
   expect(action.payload).toEqual(newItem);
@@ -55,7 +56,7 @@ test('server result', async () => {
   expect(result.payload).toStrictEqual(mockAPIAnswers);
   expect(state.todoItems).toStrictEqual(todoState);
 
-  store.dispatch(resetState());
+  store.dispatch(await resetState());
 
   const resetTest = store.getState().todo;
   expect(resetTest.todoItems).toStrictEqual(todoInitState.todoItems);
