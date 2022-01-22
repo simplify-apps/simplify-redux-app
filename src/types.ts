@@ -55,7 +55,7 @@ export enum httpMethod {
  * The interface for simplifying action creation and server interaction.
  * After the HTTP request will be done by a specific URL, the response will be used in updating the store.
  */
-export interface ReduxServerAction<TInitialState> {
+export interface ReduxServerAction<TInitialState, TPayload> {
   /**
    * The name which will be used for action name
    */
@@ -79,17 +79,14 @@ export interface ReduxServerAction<TInitialState> {
   /**
    * The method which will be used for the store updating after successful server response
    */
-  updater: (state: TInitialState, payload: any) => TInitialState;
+  updater: (state: TInitialState, payload: TPayload) => TInitialState;
 }
 
-/**
- * The internal interface which will be used in the middleware
- */
-export interface SimpleAction extends AnyAction {
+export interface SimpleAction<TState, TPayload> extends AnyAction {
   /**
    * The payload which will be used in the middleware
    */
-  payload: any;
+  payload: TPayload;
 
   /**
    * The type name which will be used in the middleware
@@ -99,7 +96,7 @@ export interface SimpleAction extends AnyAction {
   /**
    * The state updater which will be used in the middleware
    */
-  updater: (...args: any) => any;
+  updater: (...args: any) => TState;
 }
 
 export type ActionFun<TState> = (...args: any) => ReduxAction<TState>;
@@ -122,9 +119,9 @@ export interface ReduxAction<TInitialState> {
 /**
  * Default type for the server action
  */
-export type serverActionFun<TInitialState> = (
+export type ServerActionFun<TInitialState, TPayload> = (
   ...args: any
-) => ReduxServerAction<TInitialState>;
+) => ReduxServerAction<TInitialState, TPayload>;
 
 /**
  * The options which will be used in the custom middleware
