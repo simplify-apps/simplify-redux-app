@@ -11,13 +11,15 @@ export function middlewareBuilder(options?: BuilderOptions) {
       }
 
       if (!action.url) {
-        dispatch({
+        const simpleAction = {
           type: action.name,
           payload: action.payload,
           updater: action.updater,
-        });
+        };
 
-        return;
+        dispatch(simpleAction);
+
+        return simpleAction;
       }
 
       const response = options?.serverAction
