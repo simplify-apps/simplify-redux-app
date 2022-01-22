@@ -1,6 +1,6 @@
 {
   "name": "simplify-redux-app",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Library for simplify redux",
   "main": "build/index.js",
   "module": "build/index.es.js",

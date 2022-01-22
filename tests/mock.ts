@@ -36,6 +36,31 @@ export const addTodoItem = builder.createReduxAction((test: string) => ({
   }),
 }));
 
+export interface ITodo {
+  first: string;
+  second: string;
+}
+
+export const ADD_NEW_ITEM_FROM_OBJECT = 'ADD_NEW_ITEM_FROM_OBJECT';
+export const addTodoObject = builder.createReduxAction((data: ITodo) => ({
+  name: ADD_NEW_ITEM_FROM_OBJECT,
+  updater: (state) => ({
+    ...state,
+    todoItems: [...state.todoItems, data.first, data.second],
+  }),
+}));
+
+export const ADD_TODO_TWO_ITEM = 'ADD_TODO_TWO_ITEM';
+export const addTwoTodoItem = builder.createReduxAction(
+  (fist: string, second: string) => ({
+    name: ADD_TODO_TWO_ITEM,
+    updater: (state) => ({
+      ...state,
+      todoItems: [...state.todoItems, fist, second],
+    }),
+  })
+);
+
 export const resetState = builder.createReduxAction(() => ({
   name: 'RESEAT_STATE',
   updater: (state) => ({

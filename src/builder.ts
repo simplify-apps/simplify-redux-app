@@ -1,4 +1,4 @@
-import { ActionFun, serverActionFun, SimpleAction } from './types';
+import { ActionFun, ServerActionFun, SimpleAction } from './types';
 
 export function simplifyBuilder<TInitialState, TInitialReducers>(
   initialState: TInitialState,
@@ -13,11 +13,12 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
 
   const createReducer =
     (initState: TInitialState, reducers: TInitialReducers) =>
-    (state = initState, action: SimpleAction) =>
+    (state = initState, action: SimpleAction<TInitialState, any>) =>
       reducers[action.type] ? reducers[action.type](state, action) : state;
 
   const apiReducer =
-    (handlePayload: any) => (state: TInitialState, action: SimpleAction) => {
+    (handlePayload: any) =>
+    (state: TInitialState, action: SimpleAction<TInitialState, any>) => {
       return {
         ...state,
         ...(handlePayload ? handlePayload(state, action.payload) : {}),
@@ -25,27 +26,24 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
     };
 
   const genericReducer =
-    (handlePayload: any) => (state: TInitialState, action: SimpleAction) => {
+    (handlePayload: any) =>
+    (state: TInitialState, action: SimpleAction<TInitialState, any>) => {
       return {
         ...state,
         ...(handlePayload ? action.updater(state) : {}),
       };
     };
 
-  const getPayload = (values: any[]) => {
-    if (!values.length) {
-      return {};
-    }
-
-    return values.length == 1 ? values[0] : values;
-  };
+  const getPayload = (values: any[]) => (!values.length ? {} : values);
 
   return {
     getState: state,
     getReducers: () => createReducer(state, reducers),
     createReduxAction: function <FuncType extends ActionFun<TInitialState>>(
       fn: FuncType
-    ): (...args: Parameters<FuncType>) => Promise<SimpleAction> {
+    ): (
+      ...args: Parameters<FuncType>
+    ) => Promise<SimpleAction<TInitialState, Parameters<FuncType>>> {
       const actionFactory = (...args: any[]): any => {
         const model = fn(...Array.from(args));
 
@@ -65,10 +63,14 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
 
       return actionFactory();
     },
-
     createServerAction: function <
-      FuncType extends serverActionFun<TInitialState>
-    >(fn: FuncType): (...args: Parameters<FuncType>) => Promise<SimpleAction> {
+      FuncType extends ServerActionFun<TInitialState, TPayload>,
+      TPayload
+    >(
+      fn: FuncType
+    ): (
+      ...args: Parameters<FuncType>
+    ) => Promise<SimpleAction<TInitialState, TPayload>> {
       const actionFactory = (...args: any[]) => {
         const model = fn(...Array.from(args));
         updateReducers({ [model.name]: apiReducer(model.updater) });
@@ -88,7 +90,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
 
       return actionFactory() as any as (
         ...args: Parameters<FuncType>
-      ) => Promise<SimpleAction>;
+      ) => Promise<SimpleAction<TInitialState, TPayload>>;
     },
   };
 }
