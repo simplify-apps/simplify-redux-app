@@ -1,12 +1,12 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import { simplifyBuilder, middlewareBuilder, httpMethod } from '../src/index';
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import { simplifyBuilder, middlewareBuilder, httpMethod } from "../src/index";
 
 export interface ITodoState {
   todoItems: string[];
 }
 
 export const todoInitState: ITodoState = {
-  todoItems: ['firstItem', 'secondItem'],
+  todoItems: ["firstItem", "secondItem"],
 };
 
 export interface APITodoItemResponse {
@@ -20,14 +20,14 @@ export interface APITodoItemResponse {
 export const mockAPIAnswers = {
   userId: 1,
   id: 1,
-  title: 'delectus aut autem',
+  title: "delectus aut autem",
   completed: false,
 };
 
 const builder = simplifyBuilder(todoInitState, {});
 
 // simple action
-export const ADD_NEW_ITEM_NAME = 'ADD_TODO_ITEM';
+export const ADD_NEW_ITEM_NAME = "ADD_TODO_ITEM";
 export const addTodoItem = builder.createReduxAction((test: string) => ({
   name: ADD_NEW_ITEM_NAME,
   updater: (state) => ({
@@ -41,7 +41,7 @@ export interface ITodo {
   second: string;
 }
 
-export const ADD_NEW_ITEM_FROM_OBJECT = 'ADD_NEW_ITEM_FROM_OBJECT';
+export const ADD_NEW_ITEM_FROM_OBJECT = "ADD_NEW_ITEM_FROM_OBJECT";
 export const addTodoObject = builder.createReduxAction((data: ITodo) => ({
   name: ADD_NEW_ITEM_FROM_OBJECT,
   updater: (state) => ({
@@ -50,7 +50,7 @@ export const addTodoObject = builder.createReduxAction((data: ITodo) => ({
   }),
 }));
 
-export const ADD_TODO_TWO_ITEM = 'ADD_TODO_TWO_ITEM';
+export const ADD_TODO_TWO_ITEM = "ADD_TODO_TWO_ITEM";
 export const addTwoTodoItem = builder.createReduxAction(
   (fist: string, second: string) => ({
     name: ADD_TODO_TWO_ITEM,
@@ -62,7 +62,7 @@ export const addTwoTodoItem = builder.createReduxAction(
 );
 
 export const resetState = builder.createReduxAction(() => ({
-  name: 'RESEAT_STATE',
+  name: "RESEAT_STATE",
   updater: (state) => ({
     ...state,
     todoItems: todoInitState.todoItems,
@@ -70,10 +70,10 @@ export const resetState = builder.createReduxAction(() => ({
 }));
 
 // rest api action
-export const LOAD_TODO_ITEM_BY_ID = 'ADD_ITEM_FROM_WEB_REQUEST';
+export const LOAD_TODO_ITEM_BY_ID = "ADD_ITEM_FROM_WEB_REQUEST";
 export const loadTodoItemById = builder.createServerAction((id: string) => ({
   name: LOAD_TODO_ITEM_BY_ID,
-  url: 'https://jsonplaceholder.typicode.com/todos/' + id,
+  url: "https://jsonplaceholder.typicode.com/todos/" + id,
   method: httpMethod.get,
   updater: (state, payload: APITodoItemResponse) => ({
     ...state,
@@ -81,9 +81,29 @@ export const loadTodoItemById = builder.createServerAction((id: string) => ({
   }),
 }));
 
+// errors handler
+
+export interface IErrorState {
+  errors: string[];
+}
+
+export const errorsInitState: IErrorState = {
+  errors: [],
+};
+
+const errorBuilder = simplifyBuilder(errorsInitState, {});
+export const addError = errorBuilder.createReduxAction((error: string) => ({
+  name: "ADD_ERROR",
+  updater: (state) => ({
+    ...state,
+    errors: [...state.errors, error],
+  }),
+}));
+
 // reducers
 export const rootReducer = combineReducers({
   todo: builder.getReducers(),
+  errors: errorBuilder.getReducers(),
 });
 
 export const store = createStore(
