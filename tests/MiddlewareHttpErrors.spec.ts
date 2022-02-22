@@ -13,10 +13,11 @@ const errorText = 'caught unexpected error';
 // Middleware & stores
 const middleWare = [
   middlewareBuilder({
-    serverAction: () => ({
+    httpRequestHandler: () => ({
       status: 500,
+      json: async () => ({}),
     }),
-    httpErrorHandler: async (response: Response, dispatch: Dispatch) => {
+    responseHandler: async (response: Response, dispatch: Dispatch) => {
       const result = await addError(errorText);
       dispatch(result);
 

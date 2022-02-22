@@ -11,7 +11,10 @@ import {
 // Middleware & stores
 const middleWare = [
   middlewareBuilder({
-    serverAction: () => mockAPIAnswers,
+    httpRequestHandler: () => ({
+      status: 200,
+      json: async () => mockAPIAnswers,
+    }),
   }),
 ];
 

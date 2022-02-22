@@ -134,14 +134,14 @@ export interface BuilderOptions {
    *
    * @returns {Object} The response which will be used in the store update
    */
-  serverAction?: (httpMethod: httpMethod, url: string, body: any) => any;
+  httpRequestHandler?: (httpMethod: httpMethod, url: string, body: any) => any;
 
   /**
    * @param response - result of HTTP response from the middleware
    *
    * @returns {boolean} - show whether action should be dispatched or not
    */
-  httpErrorHandler?: (
+  responseHandler?: (
     response: Response,
     dispatch: Dispatch
   ) => Promise<boolean>;
