@@ -27,6 +27,14 @@ test('store default state', () => {
   expect(todoState.todoItems).toStrictEqual(todoInitState.todoItems);
 });
 
+test('action to string', async () => {
+  const { title } = mockAPIAnswers;
+  const result = await addTodoItem(title);
+
+  expect(result.toString()).toStrictEqual(ADD_NEW_ITEM_NAME);
+  expect(`${result}`).toStrictEqual(ADD_NEW_ITEM_NAME);
+});
+
 test('action tests', async () => {
   const { title } = mockAPIAnswers;
   const result = await addTodoItem(title);

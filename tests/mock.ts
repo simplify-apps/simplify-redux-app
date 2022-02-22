@@ -3,10 +3,12 @@ import { simplifyBuilder, middlewareBuilder, httpMethod } from '../src/index';
 
 export interface ITodoState {
   todoItems: string[];
+  errors: string[];
 }
 
 export const todoInitState: ITodoState = {
   todoItems: ['firstItem', 'secondItem'],
+  errors: [],
 };
 
 export interface APITodoItemResponse {
@@ -66,6 +68,7 @@ export const resetState = builder.createReduxAction(() => ({
   updater: (state) => ({
     ...state,
     todoItems: todoInitState.todoItems,
+    errors: [],
   }),
 }));
 
@@ -78,6 +81,14 @@ export const loadTodoItemById = builder.createServerAction((id: string) => ({
   updater: (state, payload: APITodoItemResponse) => ({
     ...state,
     todoItems: [...state.todoItems, payload.title],
+  }),
+}));
+
+export const addError = builder.createReduxAction((error: string) => ({
+  name: 'ADD_ERROR',
+  updater: (state) => ({
+    ...state,
+    errors: [...state.errors, error],
   }),
 }));
 

@@ -1,4 +1,4 @@
-import { ActionFun, ServerActionFun, SimpleAction } from "./types";
+import { ActionFun, ServerActionFun, SimpleAction } from './types';
 
 export function simplifyBuilder<TInitialState, TInitialReducers>(
   initialState: TInitialState,
@@ -47,6 +47,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
             type: model.name,
             updater: data.updater,
             payload: getPayload(args),
+            toString: () => model.name,
           };
         };
       };
@@ -75,6 +76,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
             updater: data.updater,
             payload: getPayload(args),
             method: data.method,
+            toString: () => model.name,
           };
         };
       };

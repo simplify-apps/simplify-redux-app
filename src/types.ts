@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import { AnyAction, Dispatch } from 'redux';
 
 /**
  * HTTP enum defines a set of request methods to indicate the desired action to be performed for a given resource.
@@ -135,4 +135,14 @@ export interface BuilderOptions {
    * @returns {Object} The response which will be used in the store update
    */
   serverAction?: (httpMethod: httpMethod, url: string, body: any) => any;
+
+  /**
+   * @param response - result of HTTP response from the middleware
+   *
+   * @returns {boolean} - show whether action should be dispatched or not
+   */
+  httpErrorHandler?: (
+    response: Response,
+    dispatch: Dispatch
+  ) => Promise<boolean>;
 }
