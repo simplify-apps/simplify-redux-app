@@ -1,4 +1,4 @@
-import { ActionFun, ServerActionFun, SimpleAction } from "./types";
+import { ActionFun, ServerActionFun, SimpleAction } from './types';
 
 export function simplifyBuilder<TInitialState, TInitialReducers>(
   initialState: TInitialState,
@@ -16,21 +16,11 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
     (state = initState, action: SimpleAction<TInitialState, any>) =>
       reducers[action.type] ? reducers[action.type](state, action) : state;
 
-  const apiReducer =
-    (handlePayload: any) =>
-    (state: TInitialState, action: SimpleAction<TInitialState, any>) => {
-      return {
-        ...state,
-        ...(handlePayload ? handlePayload(state, action.payload) : {}),
-      };
-    };
-
   const genericReducer =
-    (handlePayload: any) =>
-    (state: TInitialState, action: SimpleAction<TInitialState, any>) => {
+    () => (state: TInitialState, action: SimpleAction<TInitialState, any>) => {
       return {
         ...state,
-        ...(handlePayload ? action.updater(state) : {}),
+        ...(action.updater ? action.updater(state, action.payload) : {}),
       };
     };
 
@@ -47,7 +37,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
       const actionFactory = (...args: any[]): any => {
         const model = fn(...Array.from(args));
 
-        updateReducers({ [model.name]: genericReducer(model.updater) });
+        updateReducers({ [model.name]: genericReducer() });
 
         return (...args: any[]): any => {
           const data = fn(...args);
@@ -74,7 +64,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
     ) => Promise<SimpleAction<TInitialState, TPayload>> {
       const actionFactory = (...args: any[]) => {
         const model = fn(...Array.from(args));
-        updateReducers({ [model.name]: apiReducer(model.updater) });
+        updateReducers({ [model.name]: genericReducer() });
 
         return (...args: any[]) => {
           const data = fn(...args);
@@ -83,6 +73,7 @@ export function simplifyBuilder<TInitialState, TInitialReducers>(
             name: data.name,
             url: data.url,
             body: data.body,
+            updater: data.updater,
             payload: getPayload(args),
             method: data.method,
             toString: () => model.name,

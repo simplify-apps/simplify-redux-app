@@ -1,5 +1,5 @@
-import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
-import { BuilderOptions } from "./types";
+import { AnyAction, Dispatch, MiddlewareAPI } from 'redux';
+import { BuilderOptions } from './types';
 
 export function middlewareBuilder(options?: BuilderOptions) {
   const simplifyReactMiddleware =
@@ -26,7 +26,7 @@ export function middlewareBuilder(options?: BuilderOptions) {
         ? await options.serverAction(action.method, action.url, action.body)
         : await fetch(action.url, {
             method: action.method,
-            body: action.body && action.method !== "GET" ? action.body : null,
+            body: action.body && action.method !== 'GET' ? action.body : null,
           });
 
       const data = options?.serverAction
@@ -34,7 +34,7 @@ export function middlewareBuilder(options?: BuilderOptions) {
         : await response.json();
 
       const shouldDispatch = options?.httpErrorHandler
-        ? options.httpErrorHandler(response, dispatch)
+        ? await options.httpErrorHandler(response, dispatch)
         : true;
 
       if (!shouldDispatch) {
@@ -43,6 +43,7 @@ export function middlewareBuilder(options?: BuilderOptions) {
 
       const serverAction = {
         type: action.name,
+        updater: action.updater,
         payload: data,
       };
 

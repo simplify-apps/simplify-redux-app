@@ -10,7 +10,7 @@ import {
   ADD_NEW_ITEM_NAME,
   ADD_TODO_TWO_ITEM,
   ADD_NEW_ITEM_FROM_OBJECT,
-} from "./mock";
+} from './mock';
 
 beforeAll(() => {
   //@ts-ignore todo: fix typing for mock
@@ -21,13 +21,13 @@ beforeAll(() => {
   );
 });
 
-test("store default state", () => {
+test('store default state', () => {
   const todoState = store.getState().todo;
 
   expect(todoState.todoItems).toStrictEqual(todoInitState.todoItems);
 });
 
-test("action to string", async () => {
+test('action to string', async () => {
   const { title } = mockAPIAnswers;
   const result = await addTodoItem(title);
 
@@ -35,7 +35,7 @@ test("action to string", async () => {
   expect(`${result}`).toStrictEqual(ADD_NEW_ITEM_NAME);
 });
 
-test("action tests", async () => {
+test('action tests', async () => {
   const { title } = mockAPIAnswers;
   const result = await addTodoItem(title);
   store.dispatch(result);
@@ -51,8 +51,8 @@ test("action tests", async () => {
   expect(resetTest.todoItems).toStrictEqual(todoInitState.todoItems);
 });
 
-test("action result", async () => {
-  const newItem = "test item";
+test('action result', async () => {
+  const newItem = 'test item';
   const action = await addTodoItem(newItem);
 
   expect(action.payload.length).toEqual(1);
@@ -60,9 +60,9 @@ test("action result", async () => {
   expect(action.name).toEqual(ADD_NEW_ITEM_NAME);
 });
 
-test("add two todo item", async () => {
-  const firstItem = "first item";
-  const secondItem = "second item";
+test('add two todo item', async () => {
+  const firstItem = 'first item';
+  const secondItem = 'second item';
 
   const action = await addTwoTodoItem(firstItem, secondItem);
 
@@ -72,9 +72,9 @@ test("add two todo item", async () => {
   expect(action.name).toEqual(ADD_TODO_TWO_ITEM);
 });
 
-test("add two todo item via object", async () => {
-  const firstItem = "first item";
-  const secondItem = "second item";
+test('add two todo item via object', async () => {
+  const firstItem = 'first item';
+  const secondItem = 'second item';
 
   const action = await addTodoObject({ first: firstItem, second: secondItem });
 
@@ -84,9 +84,9 @@ test("add two todo item via object", async () => {
   expect(action.name).toEqual(ADD_NEW_ITEM_FROM_OBJECT);
 });
 
-test("action todo items state test", async () => {
-  const firstItem = "first item";
-  const secondItem = "second item";
+test('action todo items state test', async () => {
+  const firstItem = 'first item';
+  const secondItem = 'second item';
 
   const result = await addTwoTodoItem(firstItem, secondItem);
 
@@ -103,8 +103,8 @@ test("action todo items state test", async () => {
   expect(resetTest.todoItems).toStrictEqual(todoInitState.todoItems);
 });
 
-test("server result", async () => {
-  const result = await store.dispatch(await loadTodoItemById("1"));
+test('server result', async () => {
+  const result = await store.dispatch(await loadTodoItemById('1'));
   const state = store.getState().todo;
   const todoState = [...todoInitState.todoItems, mockAPIAnswers.title];
 
