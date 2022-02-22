@@ -22,19 +22,21 @@ export function middlewareBuilder(options?: BuilderOptions) {
         return simpleAction;
       }
 
-      const response = options?.serverAction
-        ? await options.serverAction(action.method, action.url, action.body)
+      const response = options?.httpRequestHandler
+        ? await options.httpRequestHandler(
+            action.method,
+            action.url,
+            action.body
+          )
         : await fetch(action.url, {
             method: action.method,
             body: action.body && action.method !== 'GET' ? action.body : null,
           });
 
-      const data = options?.serverAction
-        ? await response
-        : await response.json();
+      const data = await response.json();
 
-      const shouldDispatch = options?.httpErrorHandler
-        ? await options.httpErrorHandler(response, dispatch)
+      const shouldDispatch = options?.responseHandler
+        ? await options.responseHandler(response, dispatch)
         : true;
 
       if (!shouldDispatch) {
