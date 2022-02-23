@@ -77,13 +77,17 @@ export const useTodo = () => {
 // custom middleware for web requests
 const middleWare = [
   middlewareBuilder({
-    serverAction: async (httpMethod: httpMethod, url: string, body: any) => {
+    httpRequestHandler: async (
+      httpMethod: httpMethod,
+      url: string,
+      body: any
+    ) => {
       const data = await fetch(url, {
         method: httpMethod,
         body: body && httpMethod !== 'GET' ? body : null,
       });
 
-      return data.json();
+      return data;
     },
   }),
 ];
