@@ -18,10 +18,14 @@ const middleWare = [
       json: async () => ({}),
     }),
     responseHandler: async (response: Response, dispatch: Dispatch) => {
-      const result = await addError(errorText);
-      dispatch(result);
+      const isRequestSuccess = response.status < 400;
 
-      return response.status == 200;
+      if (!isRequestSuccess) {
+        const result = await addError(errorText);
+        dispatch(result);
+      }
+
+      return isRequestSuccess;
     },
   }),
 ];

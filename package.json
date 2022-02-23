@@ -1,7 +1,11 @@
 {
   "name": "simplify-redux-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Library for simplify redux",
+  "homepage": "https://github.com/simplify-apps/simplify-redux-app#readme",
+  "bugs": {
+    "url": "https://github.com/simplify-apps/simplify-redux-app/issues"
+  },
   "main": "build/index.js",
   "module": "build/index.es.js",
   "jsnext:main": "build/index.es.js",
@@ -17,10 +21,13 @@
   ],
   "keywords": [
     "redux",
+    "react",
+    "reducer",
+    "state",
     "simplify"
   ],
   "author": "SimplifyApps",
-  "license": "ISC",
+  "license": "MIT",
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
