@@ -43,10 +43,10 @@ then create module
 ```jsx
 import { simplifyBuilder } from 'simplify-redux-app';
 
-// create builder that will handle all works
+// create builder that will handle all the work
 const builder = simplifyBuilder(state, existReducers);
 
-// create reducer for that will be used by redux
+// create reducer that will be used by redux
 const reducer = builder.getReducers()
 ```
 
@@ -78,7 +78,7 @@ const addTodoItem = builder.createReduxAction((test: string) => ({
   }),
 }));
 
-// example how to send request a server  
+// example how to send a server request
 const loadTodoItemById = builder.createServerAction((id: string) => ({
   name: 'LOAD_TODO_ITEM_BY_ID',
   url: 'https://jsonplaceholder.typicode.com/todos/' + id,
@@ -105,17 +105,17 @@ const addTodoItem: (test: string) => Promise<SimpleAction<ITodoState, [test: str
 
 and simply by dispatching it your react component `dispatch(addTodoItem('test'))` your redux store will be updated, that's it!
 
-in the case when you need to send the request to the server via HTTP and put the result into redux, you can use `createServerAction`. For example `loadTodoItemById` will will create promise:
+in the case when you need to send the request to the server via HTTP and put the result into redux, you can use `createServerAction`. For example `loadTodoItemById` will create promise:
 
 ```typescript
 const loadTodoItemById: (id: string) => Promise<SimpleAction<ITodoState, APITodoItemResponse>>
 ```
 
-and like previously by dispatching the function in the to react component your store will be updated!
+and like previously by dispatching the function in the react component your store will be updated!
 
 if you will call `toString` method on any function, that was created from SRA build, it will return the `name` of the action. (no more constants 😅)
 
-Wanna more? Check the `example` folder or ask questions
+Want more? Check the `example` folder or ask questions
 
 ## 👷 Custom middleware 
 
